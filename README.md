@@ -313,6 +313,332 @@ print(json.dumps(test_dict, sort_keys=True, indent=4 * ' '))
   print(str2[::-1])                   # 역순으로 출력하기
   ```
 
+## 5. 파이썬 자료구조
+- 리스트와 튜플
+  ```py
+  # 리스트 - 순서 O, 중복 O, 수정 O, 삭제 O
+  # 선언
+  a = []
+  b = list()                              # 명시적으로 선언하기
+  c = [1, 2, 3, 4]                        # 값을 저장함과 동시에 리스트 선언
+  d = [10, 100, 'Pen', 'Banana', 4.21]    # 다양한 타입 저장 가능
+  e = [10, 100, ['Pen', 'Banana']]        # 리스트 내 리스트도 가능
+
+  # 인덱싱
+  print(d[3])                             # 앞에서부터 4번째(0, 1, 2, 3)
+  print(d[-2])                            # 뒤에서부터 2번째(-1, -2)
+  print(d[0] + d[1])                      # numbers 연산
+  print(e[2][1])                          # 리스트 내의 리스트 가져오기
+
+  # 슬라이싱
+  print(d[0:1])
+  print(d[0:2])
+  print(e[2][1:3])
+
+  # 연산
+  print(c + d)
+  print(c * 3)
+  print(str(c[0]) + 'hi')
+
+  # 수정/삭제
+  c[0] = 77
+  print(c)
+  c[0:2] = [100, 1000, 10000]
+  print(c)
+  c[1] = ['a', 'b', 'c']
+  print(c)
+
+  del c[1]
+  print(c)
+  del c[-1]
+  print(c)
+
+  # 함수
+  y = [5, 2, 3, 1, 4]
+  print(y)
+  y.append(6)                             # 리스트의 끝에 삽입
+  y.sort()                                # 리스트 오름차순 정렬
+  y.reverse()                             # 리스트 뒤집기
+  y.insert(2, 7)                          # 2번 인덱스에 7을 삽입
+  y.remove(7)                             # 7의 값을 삭제
+  y.pop()                                 # 마지막 원소를 삭제하고 반환
+  x = [88, 77]
+  y.extend(x)                             # 붙이기, + 와 동일
+
+  # 튜플 - 순서 O, 중복 O, 수정 X, 삭제 X : 중요한 키 데이터 - 변경되거나 수정되면 크리티컬한 영향을 끼치는 데이터는 튜플에 저장한다.
+  # 선언
+  a = ()
+  b = (1, )
+  c = (1, 2, 3, 4)
+  d = (10, 100, ('a', 'b', 'c'))
+
+  # 인덱싱
+  print(c[2])
+  print(c[3])
+  print(d[2][2])
+  print(c[2:])
+  print(d[2][0:2])
+
+  # 연산
+  print(c + d)
+  print(c * 3)
+
+  # 함수
+  z = (5, 2, 1, 3, 4)
+  print(z)
+  print(3 in z)
+  print(z.index(3))       # 값이 3인 인덱스
+  print(z.count(1))       # 개수가 1인 원소의 갯수
+  ```
+
+- 딕셔너리와 집합
+  ```py
+  # 딕셔너리 - 순서 X, 중복 X 수정 O, 삭제 O : key, value 형태로 저장
+  # 선언
+  a = {'name': 'capt', 'age': 100, 'skill': 'shield', 'death': False}
+  b = {0: 'capt', 1: 'thor'}
+  c = {'arr': [1, 2, 3, 4, 5]}
+
+  print(type(a))
+
+  # 출력
+  print(a['name'])        # name 키가 없다면 에러가 발생
+  print(a.get('name'))    # get 메소드로 접근하면 에러가 안남
+  print(a.get('life'))    # 에러 안남
+  print(c['arr'][1:2])    # 슬라이싱 가능
+
+  # 딕셔너리 추가
+  a['life'] = '1'
+  print(a)
+  a['rank'] = [1, 3, 4]
+  a['rank2'] = (1, 2, 3,)
+  print(a)
+
+  # keys, values, items
+  print(a.keys())         # a의 키들만 리스트 형태로 반환
+  # print(a.keys()[0])      # 에러, not supported index
+  print(list(a.keys()))   # 리스트로 변환한 뒤 인덱싱
+
+  temp = list(a.keys())
+  print(temp[1:3])
+
+  print(a.values())       # values를 리스트 형태로 반환
+  print(list(a.values()))
+
+  print(a.items())        # key, value 한 쌍을 리스트로 반환한다.
+  temp = list(a.items())
+  print(temp)             # list 안에 튜플 형태로 반환한다.
+
+  print(2 in b)               # 없다
+  print('name2' in a)         # 없다
+  print('name2' not in a)     # 있다
+
+  # 집합 - 순서 X, 중복 X
+  a = set()
+  b = set([1, 2, 3, 4])
+  c = set([1, 4, 5, 6, 6])    # 중복을 허용하지 않음
+
+  print(c)
+
+  # 리스트는 대괄호, 튜플은 중괄호, 셋은 소괄호
+
+  s1 = set([1, 2, 3, 4, 5, 6])
+  s2 = set([4, 5, 6, 7, 8, 9])
+
+  print(s1.intersection(s2))  # s1과 s2의 교집합을 반환
+  print(s1 & s2)              # 동일
+
+  print(s1.union(s2))         # s1과 s2의 합십합을 반환
+  print(s1 | s2)              # 동일
+
+  print(s1.difference(s2))    # s1과 s2의 차집합을 반환
+  print(s1 - s2)              # 동일
+
+  # 추가 & 제거
+  s3 = set([7, 8, 10, 15])
+  s3.add(18)
+  # s3.add(7)                 # 중복이라 안됨
+  print(s3)
+  s3.remove(15)
+  print(s3)
+  ```
+
+## 6. 파이썬 조건문
+```py
+# 조건문
+print(type(True))
+print(type(False))
+
+if True:
+    print("실행!")
+
+if False:
+    print("실행 안됨")
+
+if False:
+    print("실행 안됨2")
+else:
+    print("실행!2")
+
+# 관계 연산자 : >, >=, <, <=, ==, !=
+
+a = 10
+b = 0
+
+print(a == b)
+print(a != b)
+print(a > b)
+print(a >= b)
+print(a < b)
+print(a <= b)
+
+# 참 거짓 종류
+# True : "내용", [내용], (내용), {내용}, 1
+# False : "", [], (), {}, 0
+
+city = ""
+
+if city:
+    print("실행")
+else:
+    print("실행 안됨")
+
+# 논리 연산자 : and or not
+a = 100
+b = 60
+c = 15
+
+print('and : ', a > b and b > c)
+print('or : ', a > b or c > b)
+print('not : ', not a > b)
+print(not False)
+print(not True)
+
+# 산술 > 관계 > 논리 순서로 적용
+print('ex1 : ', 5 + 10 > 0 and not 7 + 3 == 10)
+
+score1 = 90
+score2 = 'A'
+
+if score1 >= 90 and score2 == 'A':
+    print('A 클래스')
+else:
+    print('과락')
+
+# 다중 조건문
+num = 90
+if num >= 90:
+    print('등급 A')
+elif num >= 80:
+    print('등급 B')
+else:
+    print('등급 C')
+
+# 중첩 조건문
+age = 27
+height = 175
+if age >= 20:
+    if height >= 170:
+        print("통과")
+```
+
+## 7. 파이썬 반복문
+```py
+# 반복문 : for, while
+
+v1 = 1
+while v1 < 11:
+    print("v1 : ", v1)
+    v1 += 1
+
+for v2 in range(10):
+    print("v2 : ", v2)
+
+for v3 in range(1, 11):
+    print("v3 : ", v3)
+
+sum1 = 0
+cnt1 = 1
+
+while cnt1 <= 100:
+    sum1 += cnt1
+    cnt1 += 1
+
+print('합1 : ', sum1)
+print('합2 : ', sum(range(1, 101)))
+print('합2 : ', sum(range(1, 101, 2)))
+
+# 시퀀스 자료형 반복 : 문자열, 리스트, 튜플, 집합, 사전
+# iterable 리턴 함수 : range, reversed, enumerate, filter, map, zip
+
+names = "tao"
+for s in names:
+    print("char : ", s)
+
+names = ["a", "b", "c", "d", "e"]
+for name in names:
+    print("name : ", name)
+
+info = {
+    "name": "capt",
+    "age": 100,
+    "skill": "shield"
+}
+# 키를 반환
+for key in info:
+    print("info : ", key)
+# 키를 반환
+for key in info.keys():
+    print("info : ", key)
+# 값을 반환
+for key in info.values():
+    print("info : ", key)
+# 키와 값
+for key in info.items():
+    print("info : ", key)
+
+name = "Thor"
+for n in name:
+    if not n.isupper():
+        print(n.upper())
+        # print(n.lower())
+    else:
+        print(n)
+
+# break
+numbers = [14, 3, 4, 7, 10, 24, 17, 2, 33, 15, 34, 36, 38]
+for num in numbers:
+    if num == 33:
+        print("found 33!")
+        break
+    else:
+        print("not found 33!")
+
+# for-else  : for문 안에 break가 작동하면 else를 무시하나, break가 작동되지 않으면 else를 수행한다.
+#           : 반복문이 정상적으로 수행 되었다면 else 블럭 수행
+for num in numbers:
+    if num == 33:
+        print("found 33!")
+        break
+    else:
+        print("not found 33!")
+else:
+    print("not found 33!")
+
+# continue
+tp = ["1", 2, 5, True, 4.3, complex(4)]
+for v in tp:
+    if type(v) is float:
+        continue
+    print("타입 : ", v)
+
+# 자료구조 변환
+name = "capt"
+print(reversed(name))
+print(list(reversed(name)))
+print(tuple(reversed(name)))
+```
+
 ## task runner 설치
 
 - vscode의 설정파일 : `tasks.json`
