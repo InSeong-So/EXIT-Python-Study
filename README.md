@@ -641,8 +641,13 @@ print(tuple(reversed(name)))
 
 ## 8. 파이썬 함수
 ```py
-# 함수 정의 방법
+# 반복되는 기능을 사전에 정의하여 사용할 수 있다. 코드의 가독성도 증가한다.
+# 하나의 기능을 수행하게 만들어야 함
+
+
+# 함수 정의 방법 : define으로 선언
 def function_name(parameter):
+    # 코드 선언부
     pass
 
 # 함수 호출 : 선언 위치 중요
@@ -709,9 +714,9 @@ dic = func_mul3(8)
 print(type(dic), dic, dic.get('ret3'), dic.items(), dic.keys(), dic.values())
 
 
-# *args
+# *args : 가변, 튜플형태로 넘어감
 def args_func(*args):  # 매개변수명 자유롭게 변경 가능
-    for i, v in enumerate(args):
+    for i, v in enumerate(args):    # 인덱스 : 값
         print('{}'.format(i), v, end=' ')
 
 args_func('Kim')
@@ -719,7 +724,7 @@ args_func('Kim', 'Park')
 args_func('Kim', 'Park', 'Lee')
 
 
-# kwargs
+# kwargs    :keyword arguments
 def kwargs_func(**kwargs):  # 매개변수명 자유롭게 변경 가능, key:value
     for v in kwargs.keys():
         print('{}'.format(v), kwargs[v], end=' ')
@@ -736,7 +741,7 @@ def example(arg_1, arg_2, *args, **kwargs):
 example(10, 20, 'park', 'kim', 'lee', age1=33, age2=34, age3=44)
 
 
-# 중첩함수
+# 중첩함수 : 파이썬 데코레이터
 def nested_func(num):
     def func_in_func(num):
         print(num)
@@ -766,7 +771,7 @@ tot_length2("niceman", 10)
 # 람다는 즉시 실행 함수(Heap 초기화) -> 메모리 초기화
 
 # 예제7
-# def mul_10(num):
+# def mul_10(num) -> int:
 #     return num * 10
 #
 # def mul_10_one(num): return num * 10
@@ -783,16 +788,286 @@ print(mul_func(5))
 print(mul_func(6))
 
 # 람다 함수 -> 할당
-lambda_mul_func = lambda x: x * 10
+# 데이터를 대량으로 가져와서 일괄적용하는데에 유용
+# num = input, num * 10 = return
+lambda_mul_func = lambda num: num * 10
+
+print('>>>>> ', lambda_mul_func(10))
 
 def func_final(x, y, func):
     print(x * y * func(10))
     
 func_final(10, 10, lambda_mul_func)
+
+print(func_final(10, 10, lambda x : x * 1000))
 ```
 
 ## 9. 파이썬 클래스
 - 클래스 선언 및 Self
+  ```py
+  # 프로그램이 커지면 처리해야 하는 메소드가 너무 많다.
+  # 서로 간의 결합을 느슨하게 해서 기능에 대한 유연성을 확보, 생산성을 향상시킨다.
+  # self, class, instance
+  
+  # 선언
+  class UserInfo:
+      # 속성, 메소드 정의
+      def __init__(self, name): # magic method
+          # UserInfo의 인스턴스 변수 내에 name을 정의
+          self.name = name
+      def user_name(self):
+          print('Name : ', self.name)
+  
+  # 인스턴스가 갖고 있는 각각의 저장장소인 네임스페이스는 전부 다르다.
+  user1 = UserInfo('capt')
+  user1.user_name()
+  print(user1.name)
+  user2 = UserInfo('thor')
+  user2.user_name()
+  print(user2.name)
+
+  # 네임스페이스 확인 : 서로 다름
+  print(id(user1))
+  print(id(user2))
+  # 각각의 인스턴스 네임스페이스 호출 : 서로 다름
+  print(user1.__dict__)
+  print(user2.__dict__)
+
+  # 클래스와 인스턴스의 차이를 구분하는 것은 중요하다.
+  # 네임스페이스 : 객체를 인스턴스화 할 때 저장된 공간
+  # 클래스 변수 : 직접 사용 가능, 객체보다 먼저 생성
+  # 인스턴스 변수 : 객체마다 별도로 존재, 인스턴스를 생성 후 사용한다.
+
+  # self란?
+  def SelfTest:
+      def function1():      # 클래스 메서드
+          print('function1 called!')
+      def function2(self):  # 인스턴스 메서드
+          print(id(self))
+          print('function2 called!')
+
+  self_test = SelfTest()
+  # self_tst.function1()  # self 인자가 업서서불가능
+  SelfTest.function1()  # 인스턴스가 없다면 클래스에서 직접 호출
+  self_tst.function2()  # 인스턴스가 있다면 인스턴스를 생성하고 호출
+
+  print(id(self_test))
+  SelfTest.function2(self_test) # 클래스에서 직접 호출할 거라면 인스턴스를 인자로 넘겨서 호출
+
+  # 클래스 변수, 인스턴스 변수
+  class WareHouse:
+      # 클래스 변수
+      stock_num = 0 # 재고
+      def __init__(self, name):
+          self.name = name
+          WareHouse.stock_num += 1
+      def __del__(self):
+          WareHouse.stock_num -= 1
+
+  user1 = WareHouse('capt')
+  user2 = WareHouse('thor')
+  user3 = WareHouse('loki')
+
+  print(user1.__dict__)     # stock_num 호출 안됨
+  print(user2.__dict__)
+  print(user3.__dict__)
+
+  print(WareHouse.__dict__) # stock_num 호출 됨, 클래스 네임스페이스, 클래스 변수는 공유된다.
+
+  print(user1.name)
+  print(user2.name)
+  print(user3.name)
+
+  print(user1.stock_num)     # 접근 가능, 자신의 네임스페이스에 없다면 클래스 네임스페이스에서 변수를 찾고, 없으면 에러를 뱉는다.
+  print(user2.stock_num)     # 접근 가능, 자신의 네임스페이스에 없다면 클래스 네임스페이스에서 변수를 찾고, 없으면 에러를 뱉는다.
+  print(user3.stock_num)     # 접근 가능, 자신의 네임스페이스에 없다면 클래스 네임스페이스에서 변수를 찾고, 없으면 에러를 뱉는다.
+
+  del user1     # 메모리에서 인스턴스를 제거
+
+  print(user2.stock_num)
+  print(user3.stock_num)
+  ```
+
+- 다중 상속
+  ```py
+  # 상속 : 슈퍼클래스(부모) 및 서브클래스(자식) -> 모든 속성, 메소드 사용 가능
+  # 코드를 재사용하고, 중복되는 코드를 최소화한다.
+
+  # 자동차 -> 속성(브랜드, 바퀴, 색상, 기능, 시리즈) : 부모
+  class Car:
+      """Parent Class"""
+      def __init__(self, tp, color):
+          self.type = tuple
+          self.color = color
+
+      def show(self):
+          return 'Car Class "Show Method!"'
+
+  class BmwCar(Car): # 상속
+      """Child Class"""
+      def __init__(self, car_name, tp, color):
+          super().__init__(tp, color)   # 부모의 init 메소드를 호출한다.
+          self.car_name = car_name
+
+      def show_model(self) -> None:
+          return "Your Car : %s" % self.car_name
+
+  class BenzCar(Car): # 상속
+      """Child Class"""
+      def __init__(self, car_name, tp, color):
+          super().__init__(tp, color)   # 부모의 init 메소드를 호출한다.
+          self.car_name = car_name
+
+      def show_model(self) -> None:
+          return "Your Car : %s" % self.car_name
+
+      def show(self):   # 부모에게도 있는 메소드이지만 동일하게 선언
+          print(super().show())    # 부모 메소드도 호출
+          return 'Car Info : %s %s %s' % (self.car_name, self.type, self.color)
+
+
+  model1 = BmwCar('520d', 'sedan', 'red')
+
+  print(model1.color)           # super
+  print(model1.type)            # super
+  print(model1.car_name)        # child
+  print(model1.show())          # 부모의 메소드 호출
+  print(model1.show_model())    # 자식의 메소드 호출
+  print(model1.__dict__)        # 부모, 자식 인스턴스 출력
+
+  # Method Overriding(오버라이딩)
+  model2 = BenzCar('220d', 'suv', 'black')
+  print(model2.show())  # 부모에 있는 것을 동일한 이름으로 자식에서 기능을 개선하거나 새로 정의한다.
+
+  # Parent Method Call
+  model2 = BenzCar('350s', 'sedan', 'black')
+  print(model3.show())
+
+  # super라는 예약어를 통해 부모 클래스에 접근이 가능하다.
+
+  # Inheritance Info : a가 b를, b가 c를 상속... 이를 표현해주는 메소드
+  print(BmwCar.mro())   # 상속관계를 출력
+  print(BenzCar.mro())   # 상속관계를 출력
+
+
+  # 다중 상속
+  class ChildClass1(object):
+      pass
+  class ChildClass2(object):
+      pass
+  class ChildClass3(object):
+      pass
+
+  class A(ChildClass1, ChildClass2)
+      pass
+  class B(ChildClass2, ChildClass3)
+      pass
+  class C(ChildClass1, ChildClass3)
+      pass
+
+  class M(A, B, C):
+      pass
+
+  print(A.mro())
+  print(M.mro())
+  ```
+
+## 10. 파이썬 모듈
+```py
+# 상대 경로
+# .. : 상위
+# . : 현재
+
+# 모듈 만들기 : package/fibonacci.py
+class Fibonacci:
+    def __init__(self, title="fibonacci"):
+        self.title = title
+    
+    def fib(n):
+        while a < n:
+            print(a, end=' ')
+            a, b = b, a+b
+        print()
+
+    def fib2(n):
+        result = []
+        a, b = 0, 1
+        while a < n:
+            result.append(a)
+            a, b = b, a+b
+        return result
+
+# 모듈 만들기 : package/prints.py
+def prt1():
+    print("Capt!")
+
+def prt2():
+    print("Thor!")
+
+# 모듈 만들기 : calculations.py
+def add(l, r):
+    return l + r
+
+def mul(l, r):
+    return l * r
+
+def div(l, r):
+    return l / r
+
+# 모듈 사용하기 1
+from package.fibonacci import Fibonacci
+
+Fibonacci.fib(300)
+
+print("ex2 : ", Fibonacci.fib2(400))
+print("ex2 : ", Fibonacci().title)  # 인스턴스 초기화 후 변수 접근
+
+# 모듈 사용하기 2 : 비권장, 메모리가 많아서... 모듈의 모든 기능을 전부 가져옴
+# 위와 동일하게 동작
+from package.fibonacci import *
+
+Fibonacci.fib(500)
+
+print("ex2 : ", Fibonacci.fib2(600))
+print("ex2 : ", Fibonacci().title)
+
+# 모듈 사용하기 3
+from package.fibonacci import Fibonacci as fb
+
+fb.fib(1000)
+
+print("ex2 : ", fb.fib2(600))
+print("ex2 : ", fb().title)
+
+# 모듈 사용하기 4
+import package.calculations as c
+
+print("ex4 : ", c.add(10, 100))
+print("ex4 : ", c.mul(10, 100))
+print("ex4 : ", c.div(10, 100))
+
+# 모듈 사용하기 5 : 권장
+import package.calculations import div as d
+print("ex5 : ", int(d(100,10)))
+
+# 모듈 사용하기 6
+import package.prints as p
+import builtins # 기본적으로 가져오므로 명시적 선언이 필요하지 않다.
+
+p.prt1()
+p.prt2()
+print(dir(builtins))
+
+# python2 버전에서는 __init__.py 가 존재하는데, 해당 디렉토리가 패키지임을 선언한다.
+# python3 존재하지 않아도 패키지로 인식, 하위호환을 위해 생성하는걸 추천한다.
+
+# 단위실행(독립적으로 파일 실행) : prints 파일에서 기록해야함, 해당 모듈의 맨 하위에 테스트코드를 작성하여 확인한다.
+if __name__ == "__main__":
+    prt1()
+    prt2()
+```
+
+## 11. 파이썬 파일 입출력
 
 ## task runner 설치
 
