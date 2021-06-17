@@ -1068,6 +1068,560 @@ if __name__ == "__main__":
 ```
 
 ## 11. 파이썬 파일 입출력
+```py
+# 읽기 모드 : r, 쓰기 모드(덮어쓰기) : w, 추가 모드(파일 생성/추가) : a
+
+# 파일 읽기1
+f = open('./resources/review.txt', 'r')
+content = f.read()
+print(content)
+print(dir(f))
+# 한 번 사용한 리소스는 반드시 close 함수로 리소스 반환하여야 오류가 나지 않는다.
+f.close()
+
+
+# 파일 읽기2 : close 문 생략 가능
+with open('./resources/review.txt', 'r') as f:
+    c = f.read()
+    print(c)
+    print(list(c))
+    print(iter(c))
+
+
+# 파일 읽기3
+with open('./resources/review.txt', 'r') as f:
+    for c in f:
+        print(c)            # 한 라인 단위로 출력
+        print(c.strip())    # 양쪽 공백 제거, 줄바꿈도 없애줌
+
+
+# 파일 읽기4 : 문제
+with open('./resources/review.txt', 'r') as f:
+    content = f.read()  # 커서가 끝까지 감 : 내용 있음
+    print("> ", content)
+    content = f.read()  # 커서가 끝에 있으므로 내용이 없음
+    print("> ", content)
+
+
+# 파일 읽기5 : 문제 해결
+with open('./resources/review.txt', 'r') as f:
+    line = f.readline()  # 한줄 씩 가져옴
+    while line:
+        print(line, end='#####')
+        line = f.readline()
+
+
+# 파일 읽기6
+with open('./resources/review.txt', 'r') as f:
+    contents = f.readlines()
+    print(contents)  # 마지막의 escape 문자를 포함하여 리스트 형태로 가지고 있는다.
+    for c in contents:
+        print(c, end='*****')
+
+# 파일 읽기 7
+score = []
+with open('./resources/score.txt', 'r') as f:
+    for line in f:
+        score.append(int(line))
+    print(score)
+
+print('Average : {:6.3}'.format(sum(score)/len(score)))
+
+
+# 파일 쓰기1
+with open('./resources/text1.txt', 'w') as f:
+    f.write('Capt\n')
+
+# 파일 쓰기2
+with open('./resources/text1.txt', 'a') as f:
+    f.write('Thor')
+
+# 파일 쓰기3
+from random import randint
+with open('./resources/text2.txt', 'w') as f:
+    for cnt in range(6):
+        f.write(str(randint(1, 50)))
+        f.write('\n')
+
+# 파일 쓰기4
+# writelines : 리스트 -> 파일로 저장
+with open('./resources/text3.txt', 'w') as f:
+    list = ['capt\n', 'thor\n', 'loki\n']
+    f.writelines(list)
+
+# 파일 쓰기5
+with open('./resources/text4.txt', 'w') as f:
+    print('Test Contents1 : ', file=f)
+    print('Test Contents2 : ', file=f)
+```
+
+## 12. 파이썬 에러 및 예외 처리
+```py
+# 예외 종류
+# 문법적으로 에러가 없으나 코드 실행(런타임) 프로세스에서 발생하는 예외 처리가 중요하다.
+# linter : 코드 스타일 및 문법 체크
+
+# 문법 에러 : SyntaxError
+"""
+print('Test)
+
+if True
+    pass
+
+x => y
+"""
+
+# 참조변수 에러 : NameError
+"""
+a = 10
+b = 20
+print(c)
+"""
+
+# 0 나누기 에러 : ZeroDivisionError
+"""
+print(10 / 0)
+"""
+
+# 인덱스 범위 에러 : IndexError
+"""
+x = [10, 20, 30]
+print(x[0]) # 정상
+print(x[3]) # 예외 발생
+"""
+
+# 키 에러 : KeyError
+"""
+dict1 = {'name': 'Capt', 'age':100}
+print(dict1['skill'])
+"""
+
+# 모듈, 클래스에 있는 잘못된 속성 사용 시 에러 : AttributeError
+"""
+import time
+print(time.time())  # time 모듈에 time 함수는 없음
+"""
+
+# 참조 값이 없을 때 에러 : ValueError
+"""
+x = [1, 5, 8]
+x.remove(10)
+x.index(10)
+"""
+
+# 파일 참조 불가 에러 : FileNotFoundError
+"""
+f = open('존재하지않는텍스트.txt', 'r')
+"""
+
+# 타입 에러 : TypeError
+"""
+x = [1, 2]
+y = (1, 2)
+
+print(x + y)
+"""
+
+# 항상 에외가 발생하지 않을 것으로 가정하고 개발
+# 그 후 런타임이나 예외 발생 시 예외를 처리할 것(EAFP 코딩 스타일)
+
+# 예외 처리
+# try : 에럭가 발생할 가능성이 있는 코드 실행
+# except: 에러명 * n
+# else : 에러가 발생하지 않았을 경우 실행
+# finally : 무조건 실행
+
+# 1
+name = ['capt', 'thor', 'loki']
+
+try:
+    z = 'capt'
+    x = name.index(z)
+    print('{} Found it!'.format(z, x+1))
+except ValueError:
+    print('Not found it, Value not exists')
+except:
+    print("모든 에러 발생")
+else:
+    print('no excuted Exception')
+
+
+# 2
+try:
+    z = 'capt'
+    x = name.index(z)
+    print('{} Found it!'.format(z, x+1))
+except ValueError:
+    print('Not found it, Value not exists')
+except: # except Exception: 과 동일
+    print("모든 에러 발생")
+else:
+    print('no excuted Exception')
+finally:
+    print('finally...')
+
+# 3 : 예외처리는 하지 않으나 무조건 수행되는 코딩 패턴
+try:
+    print("test")
+finally:
+    print("ok!")
+
+
+# 4
+try:
+    z = 'capt'
+    x = name.index(z)
+    print('{} Found it!'.format(z, x+1))
+except ValueError:
+    print('Not found it, Value not exists')
+except IndexError as e:
+    print("에러 발생", e)
+
+
+# 5 : 예외발생(raise) 키워드로 예외 직접 발생
+try:
+    a = 'capt'
+    if a == 'capt':
+        print("확인")
+    else:
+        raise ValueError
+except ValueError:
+    print("예상치 못한 문제 발생")
+except Exception as f:
+    print(f)
+else:
+    print('성공')
+```
+
+## 13. 파이썬 외부 파일 처리
+```py
+# CSV : MIME = text/csv
+import csv
+with open('./resources/sample1.csv', 'r') as f:
+    # ======================================================== 1 라인별 반환
+    # reader = csv.reader(f)
+
+    # # 라인 스킵, 지금은 헤더 다음 행부터 출력되게 만듦
+    # next(reader)
+
+    # # reader에 대한 검증
+    # print(reader)
+    # print(type(reader))
+    # print(dir(reader))
+
+    # for c in reader:
+    #     print(c)
+
+    # ======================================================== 2 구분자로 리스트 반환
+    # reader = csv.reader(f, delimiter='|')
+    # for c in reader:
+    #     print(c)
+
+    # ======================================================== 3 딕셔너리 형태로 변환
+    reader = csv.DictReader(f)
+
+    # 라인 스킵, 지금은 헤더 다음 행부터 출력되게 만듦
+    next(reader)
+
+    for c in reader:
+        for k, y in c.items():
+            print(k, y)
+        print('====================================')
+
+# 4 원소를 줄별로 작성하기
+w = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12], [13, 14, 15], [16, 17, 18]]
+
+# with open('./resources/sample3.csv', 'w') as f:           # 개행문자 처리(줄바꿈 있음)
+with open('./resources/sample3.csv', 'w', newline='') as f: # 개행문자 미처리(줄바꿈 없음)
+    wt = csv.writer(f)
+
+    for v in w:
+        wt.writerow(v)
+
+# 5 줄별이 아니라 한 번에 쓰기
+with open('./resources/sample4.csv', 'w', newline='') as f: # 개행문자 미처리(줄바꿈 없음)
+    wt = csv.writer(f)
+    wt.writerows(w)
+
+
+# XSL, XLSX
+# openpyxl, xlsxwriter, xlrd, xlwt, xlutils, pandas
+# pandas(openpyxl, xlrd) : 열과 행의 데이터셋, 프레임셋을 만들어서 정확하게 통계를 추출할 수 있다. numpy라는 라이브러리를 쓸 수 있다.
+# pip install xlrd
+# pip install openpyxl
+# pip install pandas
+# 의존관계에 의해 패키지가 설치된다.
+import pandas as pd
+
+# sheetname='시트명', 또는 숫자, header=숫자, skiprow=숫자
+xlsx = pd.read_excel('./resources/sample.xlsx')
+
+# 상위 데이터 확인
+print(xlsx.head())  # 기본적으로 처음부터 5번째까지 값을 가져온다.
+
+# 데이터 확인
+print(xlsx.tail())  # 기본적으로 5번째부터 끝까지 값을 가져온다.
+
+# 데이터 확인
+print(xlsx.shape) # 행, 열
+
+# 엑셀 or CSV 다시 쓰기
+xlsx.to_excel('./resources/result.xlsx', index=False)   # 열에다가 인덱스를 붙여줌, False는 생략
+xlsx.to_csv('./resources/result.csv', index=False)
+```
+
+## 14. 파이썬 데이터베이스 연동
+```py
+# 테이블 생성 및 삽입
+import sqlite3
+import datetime
+
+# 삽입 날짜 생성
+now = datetime.datetime.now()   # 현재시간
+print('now : ', now)
+
+now_date_time = now.strftime('%Y-%m-%d %H:%M:%S')
+print('now date time : ', now_date_time)
+
+# sqlite3
+print('sqlite3.version : ', sqlite3.version)
+print('sqlite3.sqliite : ', sqlite3.sqlite_version)
+
+# DB 생성 및 Auto Commit(Rollback) 설정   : 쿼리를 실행할 때마다 데이터베이스에 반영하겠다는 뜻
+conn = sqlite3.connect('C:/python_basic/resources/database.db', isolation_level=None)    # Auto Commit : True, Default는 False
+
+# Cursor : 커서가 이동하면서 데이터를 반환한다.
+c = conn.cursor()
+print('Cursor Type : ', type(c))
+
+# 테이블 삭제
+c.execute(
+    """
+    DROP TABLE IF EXISTS users
+    """)
+
+# 테이블 생성(Data Type : TEXT, NUMERIC, INTEGER, REAL, BLOB)
+c.execute(
+    """
+    CREATE TABLE IF NOT EXISTS users(
+        id INTEGER PRIMARY KEY,
+        username TEXT,
+        email TEXT,
+        phone TEXT,
+        site TEXT,
+        regdate TEXT
+    )
+    """)
+
+# 데이터 삽입 : ?를 통해 파라미터를 넣는다.
+c.execute(
+    """
+    INSERT INTO users VALUES(
+        1, 'capt', 'capt@mail.com', '999-9999-9999', 'none', ?
+    )
+    """,
+    (now_date_time,)
+)
+
+c.execute(
+    """
+    INSERT INTO users(
+        id, username, email, phone, site, regdate
+    ) VALUES (
+        ?,?,?,?,?,?
+    )
+    """,
+    (2, 'thor', 'thor@mail.com', '777-7777-7777', 'avengers', now_date_time)
+)
+
+# 데이터 삽입 : 대용량(튜플, 리스트)
+user_list = (
+    (3, 'loki1', 'loki@mail.com', '123', 's', now_date_time),
+    (4, 'loki2', 'loki@mail.com', '456', 'b', now_date_time),
+    (5, 'loki3', 'loki@mail.com', '789', 'c', now_date_time),
+)
+
+c.executemany(
+    """
+    INSERT INTO users(
+        id, username, email, phone, site, regdate
+    ) VALUES (
+        ?,?,?,?,?,?
+    )
+    """,
+    user_list
+)
+
+# 테이블 데이터 삭제
+# c.execute("DELETE FROM users")
+# print("users db deleted : ", c.execute("DELETE FROM users").rowcount)   # 삭제한 행 반환
+
+# 데이터베이스 커밋 & 롤백 : isolation_level = None 이라면 자동 반영(auto commit)
+# conn.commit()
+# conn.rollback()
+
+# 리소스를 사용했다면 닫아야 한다.
+conn.close()
+```
+
+## 15. 파이썬 테이블 조회
+```py
+import sqlite3
+
+# DB 파일 조회 : 없으면 생성
+conn = sqlite3.connect('C:/python_basic/resources/database.db',
+                       isolation_level=None)    # Auto Commit : True, Default는 False
+
+# 커서 바인딩
+c = conn.cursor()
+
+# 데이터 조회(전체)
+c.execute("SELECT * FROM users")
+
+# 커서 위치 변경, 1개 로우 선택
+print('One : ', c.fetchone())
+
+# 지정 로우 선택
+print('Three : ', c.fetchmany(size=3))
+
+# 전체 로우 선택
+print('All : ', c.fetchall())
+# print('All : ', c.fetchall())   # 실행 해봤자 데이터 없음
+
+# 순회1
+rows = c.fetchall()  # 데이터베이스에 대한 위치 정보가 있음
+for row in rows:
+    print(row)
+
+# 순회2
+for row in c.execute("SELECT * FROM users ORDER BY id desc"):
+    print(row)
+
+# WHERE Retrieve1
+param1 = (3,)
+c.execute(
+    """
+    SELECT * FROM users WHERE id=?
+    """,
+    param1
+)
+print(c.fetchone())
+
+# WHERE Retrieve2
+param2 = 4
+c.execute(
+    """
+    SELECT * FROM users WHERE id=%s
+    """
+    % param2
+)
+print(c.fetchone())
+
+# WHERE Retrieve3
+c.execute(
+    """
+    SELECT * FROM users WHERE id=:Id
+    """,
+    {"Id": 5}
+)
+print(c.fetchone())
+
+# WHERE Retrieve4
+param4 = (3, 5)
+c.execute(
+    """
+    SELECT * FROM users WHERE id IN (?,?)
+    """,
+    param4
+)
+print(c.fetchall())
+
+# WHERE Retrieve5
+c.execute(
+    """
+    SELECT * FROM users WHERE id IN ('%d', '%d')
+    """
+    % (3, 4)
+)
+print(c.fetchall())
+
+# WHERE Retrieve6
+c.execute(
+    """
+    SELECT * FROM users WHERE id=:id1 OR id=:id2
+    """,
+    {"id1": 2, "id2": 5}
+)
+print(c.fetchall())
+
+
+# Dump 출력 : 데이터베이스를 백업하고 재구성할 때 사용
+with conn:
+    with open('C:/python_basic/resources/dump.sql', 'w') as f:
+        for line in conn.iterdump():
+            f.write('%s\n' % line)
+        print('Dump Complete')
+        # f.close(), conn.close() 전부 호출됨
+```
+
+## 16. 파이썬 테이블 수정
+```py
+import sqlite3
+
+# DB 파일 조회 : 없으면 생성
+conn = sqlite3.connect('C:/python_basic/resources/database.db',
+                       isolation_level=None)    # Auto Commit : True, Default는 False
+
+# 커서 바인딩
+c = conn.cursor()
+
+# 데이터 수정1
+c.execute(
+    """
+    UPDATE users SET username = ? WHERE id = ?
+    """,
+    ('blackwidow', 2)
+)
+
+# 데이터 수정2
+c.execute(
+    """
+    UPDATE users SET username = :name WHERE id = :id
+    """,
+    {'name':'hawkeye', 'id':3}
+)
+
+# 데이터 수정3
+c.execute(
+    """
+    UPDATE users SET username = '%s' WHERE id = '%d'
+    """
+    % ('superman', 1)
+)
+
+# 데이터 확인
+for user in c.execute("SELECT * FROM users"):
+    print(user)
+
+
+# 데이터 행 삭제1
+c.execute("DELETE FROM users WHERE id = ?", (2,))
+
+# 데이터 행 삭제2
+c.execute("DELETE FROM users WHERE id = :id", {"id":1})
+
+# 데이터 행 삭제3
+c.execute("DELETE FROM users WHERE id = '%s'" % 4)
+
+# 데이터 확인
+for user in c.execute("SELECT * FROM users"):
+    print(user)
+
+# 테이블 전체 데이터 행 삭제
+print("users db deleted : ", c.execute("DELETE FROM users").rowcount, " ROWS")   # 삭제한 행 반환
+
+conn.close()
+```
 
 ## task runner 설치
 
