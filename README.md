@@ -171,7 +171,9 @@ print(json.dumps(test_dict, sort_keys=True, indent=4 * ' '))
 ```
 
 ## 4. 파이썬 자료형
+
 - 자료형
+
   ```py
   # Boolean
   v_bool = True
@@ -201,6 +203,7 @@ print(json.dumps(test_dict, sort_keys=True, indent=4 * ' '))
   ```
 
 - 숫자형 연산
+
   ```py
   import math
 
@@ -253,6 +256,7 @@ print(json.dumps(test_dict, sort_keys=True, indent=4 * ' '))
   ```
 
 - 문자열 연산
+
   ```py
   str1 = 'test'
   str2 = 'perfect'
@@ -287,7 +291,7 @@ print(json.dumps(test_dict, sort_keys=True, indent=4 * ' '))
   str_operator = '*'
   str_target = 'abc'
   print(str_operator * 100)
-  print(str_target + 'def')   
+  print(str_target + 'def')
   # print(str_operator + 3)   # 에러 : 숫자형을 더할 순 없음
   print(str_operator + '3')   # 에러 : 숫자형을 더할 순 없음
   print('a' in str_target)    # a가 다음에 오는 문자에 포함되어있는지 여부
@@ -314,7 +318,9 @@ print(json.dumps(test_dict, sort_keys=True, indent=4 * ' '))
   ```
 
 ## 5. 파이썬 자료구조
+
 - 리스트와 튜플
+
   ```py
   # 리스트 - 순서 O, 중복 O, 수정 O, 삭제 O
   # 선언
@@ -392,6 +398,7 @@ print(json.dumps(test_dict, sort_keys=True, indent=4 * ' '))
   ```
 
 - 딕셔너리와 집합
+
   ```py
   # 딕셔너리 - 순서 X, 중복 X 수정 O, 삭제 O : key, value 형태로 저장
   # 선언
@@ -464,6 +471,7 @@ print(json.dumps(test_dict, sort_keys=True, indent=4 * ' '))
   ```
 
 ## 6. 파이썬 조건문
+
 ```py
 # 조건문
 print(type(True))
@@ -543,6 +551,7 @@ if age >= 20:
 ```
 
 ## 7. 파이썬 반복문
+
 ```py
 # 반복문 : for, while
 
@@ -640,6 +649,7 @@ print(tuple(reversed(name)))
 ```
 
 ## 8. 파이썬 함수
+
 ```py
 # 반복되는 기능을 사전에 정의하여 사용할 수 있다. 코드의 가독성도 증가한다.
 # 하나의 기능을 수행하게 만들어야 함
@@ -796,19 +806,21 @@ print('>>>>> ', lambda_mul_func(10))
 
 def func_final(x, y, func):
     print(x * y * func(10))
-    
+
 func_final(10, 10, lambda_mul_func)
 
 print(func_final(10, 10, lambda x : x * 1000))
 ```
 
 ## 9. 파이썬 클래스
+
 - 클래스 선언 및 Self
+
   ```py
   # 프로그램이 커지면 처리해야 하는 메소드가 너무 많다.
   # 서로 간의 결합을 느슨하게 해서 기능에 대한 유연성을 확보, 생산성을 향상시킨다.
   # self, class, instance
-  
+
   # 선언
   class UserInfo:
       # 속성, 메소드 정의
@@ -817,7 +829,7 @@ print(func_final(10, 10, lambda x : x * 1000))
           self.name = name
       def user_name(self):
           print('Name : ', self.name)
-  
+
   # 인스턴스가 갖고 있는 각각의 저장장소인 네임스페이스는 전부 다르다.
   user1 = UserInfo('capt')
   user1.user_name()
@@ -889,6 +901,7 @@ print(func_final(10, 10, lambda x : x * 1000))
   ```
 
 - 다중 상속
+
   ```py
   # 상속 : 슈퍼클래스(부모) 및 서브클래스(자식) -> 모든 속성, 메소드 사용 가능
   # 코드를 재사용하고, 중복되는 코드를 최소화한다.
@@ -973,6 +986,7 @@ print(func_final(10, 10, lambda x : x * 1000))
   ```
 
 ## 10. 파이썬 모듈
+
 ```py
 # 상대 경로
 # .. : 상위
@@ -982,7 +996,7 @@ print(func_final(10, 10, lambda x : x * 1000))
 class Fibonacci:
     def __init__(self, title="fibonacci"):
         self.title = title
-    
+
     def fib(n):
         while a < n:
             print(a, end=' ')
@@ -1068,6 +1082,7 @@ if __name__ == "__main__":
 ```
 
 ## 11. 파이썬 파일 입출력
+
 ```py
 # 읽기 모드 : r, 쓰기 모드(덮어쓰기) : w, 추가 모드(파일 생성/추가) : a
 
@@ -1156,6 +1171,7 @@ with open('./resources/text4.txt', 'w') as f:
 ```
 
 ## 12. 파이썬 에러 및 예외 처리
+
 ```py
 # 예외 종류
 # 문법적으로 에러가 없으나 코드 실행(런타임) 프로세스에서 발생하는 예외 처리가 중요하다.
@@ -1294,6 +1310,7 @@ else:
 ```
 
 ## 13. 파이썬 외부 파일 처리
+
 ```py
 # CSV : MIME = text/csv
 import csv
@@ -1371,6 +1388,7 @@ xlsx.to_csv('./resources/result.csv', index=False)
 ```
 
 ## 14. 파이썬 데이터베이스 연동
+
 ```py
 # 테이블 생성 및 삽입
 import sqlite3
@@ -1465,6 +1483,7 @@ conn.close()
 ```
 
 ## 15. 파이썬 테이블 조회
+
 ```py
 import sqlite3
 
@@ -1565,6 +1584,7 @@ with conn:
 ```
 
 ## 16. 파이썬 테이블 수정
+
 ```py
 import sqlite3
 
@@ -1621,6 +1641,124 @@ for user in c.execute("SELECT * FROM users"):
 print("users db deleted : ", c.execute("DELETE FROM users").rowcount, " ROWS")   # 삭제한 행 반환
 
 conn.close()
+```
+
+## 17. 파이썬 심화
+```py
+# Python Object Referrence
+
+print("ex1")
+print(dir())
+
+# id vs __eq__ (==) 증명
+# 리스트 비교
+x = {'name': 'capt', 'age': 100, 'city': 'seoul'}
+y = x
+
+print("ex2 : ", id(x), id(y))   # 복사 개념이므로 주소 값이 같다.
+print("ex3 : ", x == y)  # 값도 같다.
+print("ex4 : ", x is y)  # 주소도 같다.
+print("ex5 : ", x, y)   # 출력되는 형태도 같다.
+
+x['class'] = 10
+print("ex6 : ", x, y)
+
+z = {'name': 'capt', 'age': 100, 'city': 'seoul', 'class': 10}
+
+print('ex6 : ', x, z)   # 출력되는 형태는 같다.
+print('ex7 : ', x is z)  # 주소는 다르다.
+print('ex8 : ', x is not z)  # 주소가 같지 않다.
+print('ex9 : ', x == z)  # 값은 같다.
+
+# 객체 생성 후 완전 불변 -> 즉, id는 객체 주소(정체성) 비교, == (__eq__)는 값 비교
+
+# 튜플 불변형 비교
+tuple1 = (10, 15, [100, 1000])
+tuple2 = (10, 15, [100, 1000])
+
+print('ex10 : ', id(tuple1), id(tuple2))  # 주소가 다르다.
+print('ex11 : ', tuple1 is tuple2)  # 주소가 다르다.
+print('ex12 : ', tuple1 == tuple2)  # 값은 같다.
+print('ex13 : ', tuple1.__eq__(tuple2))  # 값은 같다.
+
+# copy, deepcopy(얕은 복사, 깊은 복사)
+# copy
+a = [10, [100, 105], (5, 10, 15)]
+b = a
+c = list(a)
+
+print('ex1 : ', a == b) # 값은 같다.
+print('ex2 : ', a is b) # 주소도 같다.
+print('ex3 : ', a == c) # 값은 같다.
+print('ex4 : ', a is c) # 주소는 다르다.
+
+a.append(1000)      # a와 b는 동일한 주소라서 값이 같으나 c는 다름
+a[1].remove(105)    # 객체를 카피해서 그럼...
+
+print('ex5 : ', a)
+print('ex6 : ', b)
+print('ex7 : ', c)
+
+print(id(a[2]))
+a[1] += [110, 120]
+a[2] += (110, 120)
+
+print('ex8 : ', a)
+print('ex9 : ', b)   # 튜플 재 할당, 객체를 새로 생성한 것
+print('ex10 : ', c)
+
+print(id(a[2]))
+
+# deepcopy
+class Basket:
+    def __init__(self, products=None) -> None:
+        if products is None:
+            self._products = []
+        else:
+            self._products = list(products)
+    
+    def put_prod(self, prod_name):
+        self._products.append(prod_name)
+
+    def del_prod(self, prod_name):
+        self._products.remove(prod_name)
+
+import copy
+
+basket1 = Basket(['apple', 'bag', 'tv', 'snack', 'water'])
+basket2 = copy.copy(basket1)
+basket3 = copy.deepcopy(basket2)
+
+print('ex1 : ', id(basket1), id(basket2), id(basket3))
+print('ex2 : ', id(basket1._products), id(basket2._products), id(basket3._products))     # 얕은 복사는 인스턴스는 다르지만, 내부의 변수는 동일한 값을 가지고 있다.
+
+basket1.put_prod('orange')
+basket2.del_prod('snack')
+
+print('ex3 : ', basket1._products, basket2._products, basket3._products)
+
+
+# 함수 매개변수 전달 사용법
+def mul(x, y):
+    x += y
+    return x
+
+x = 10
+y = 5
+
+print('ex1 : ', mul(x, y), x, y) # 정수형은 데이터가 변경되지 않음
+a = [10, 100]
+b = [5, 10]
+print('ex2 : ', mul(a, b), a, b) # 가변형은 데이터가 변경됨, 원본 데이터 변형
+
+c = (10, 100)
+d = (5, 10)
+
+print('ex3 : ', mul(c, d), c, d) # 불변형은 데이터가 변경되지 않음, 원본 데이터 유지
+
+# 파이썬 불변형 예외
+# str, bytes, frozenset, tuple : 사본 생성 없이 참조를 반환한다.
+# frozenset : 아예 불변형으로 만들어버림
 ```
 
 ## task runner 설치
